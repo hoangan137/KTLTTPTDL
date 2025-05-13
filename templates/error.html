@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}Lỗi{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 50px 20px; text-align: center;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+        <i class="fas fa-exclamation-triangle" style="font-size: 60px; color: #c8102e; margin-bottom: 20px;"></i>
+        <h1 style="color: #333; margin-bottom: 20px;">Đã xảy ra lỗi</h1>
+        <p style="color: #666; margin-bottom: 30px; font-size: 18px;">{{ message }}</p>
+        <a href="{{ url_for('index') }}" class="btn" style="display: inline-block; padding: 10px 20px; background-color: #c8102e; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Quay lại trang chủ</a>
+    </div>
+</div>
+{% endblock %}

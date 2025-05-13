@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Truyện Cổ Tích Việt Nam{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="../static/images/vip.png" />
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Decorative Pattern -->
+    <div class="pattern-top"></div>
+
+    <!-- Decorative Dragons -->
+    <div class="dragon-decoration dragon-top-right"></div>
+    <div class="dragon-decoration dragon-bottom-left"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="../static/images/305494865_482628510538506_5919768719338971536_n.png" alt="Logo Truyện Cổ Tích">
+                    <span class="logo-text">Truyện Cổ Tích Việt Nam</span>
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('index') }}" class="nav-link">Trang Chủ</a></li>
+                    <li><a href="#" class="nav-link">Danh Mục</a></li>
+                    <li><a href="{{ url_for('liked_stories') }}" class="nav-link">Yêu Thích</a></li>
+                    <li><a href="{{ url_for('introduce') }}" class="nav-link">Giới Thiệu</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <form class="search-form" method="get" action="{{ url_for('index') }}">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" name="q" class="search-input" placeholder="Tìm kiếm truyện..." value="{{ keyword|default('') }}">
+                    </form>
+                    {% if session.username %}
+                        <span class="welcome-text">👋 Xin chào, {{ session.username }}</span>
+                        <a href="/logout" class="btn">Đăng Xuất</a>
+                        {% else %}
+                        <a href="/login" class="btn">Đăng Nhập</a>
+                        {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">
+                        <img src="../static/images/305494865_482628510538506_5919768719338971536_n.png" alt="Logo Truyện Cổ Tích">
+                        <span class="logo-text">Truyện Cổ Tích</span>
+                    </div>
+                    <p class="footer-about">Kho tàng truyện cổ tích Việt Nam - Nơi lưu giữ và phát huy những giá trị văn hóa dân gian quý báu.</p>
+                </div>
+
+                <div>
+                    <h3 class="footer-heading">Danh Mục</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Truyện Thần Thoại</a></li>
+                        <li><a href="#" class="footer-link">Truyện Cổ Tích</a></li>
+                        <li><a href="#" class="footer-link">Truyện Ngụ Ngôn</a></li>
+                        <li><a href="#" class="footer-link">Truyện Dân Gian</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-heading">Liên Kết</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('index') }}" class="footer-link">Trang Chủ</a></li>
+                        <li><a href="{{ url_for('introduce') }}" class="footer-link">Giới Thiệu</a></li>
+                        <li><a href="#" class="footer-link">Điều Khoản Sử Dụng</a></li>
+                        <li><a href="#" class="footer-link">Chính Sách Bảo Mật</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-heading">Liên Hệ</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> info@truyencotich.vn</li>
+                        <li><i class="fas fa-phone"></i> (84) 123 456 789</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© <span id="current-year"></span> Truyện Cổ Tích Việt Nam. Tất cả các quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

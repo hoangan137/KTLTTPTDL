@@ -1,0 +1,500 @@
+{% extends "layout.html" %}
+
+{% block title %}Truyện Yêu Thích | Truyện Cổ Tích Việt Nam{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/liked-stories.css') }}">
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Liked Stories Page Specific Styles */
+.liked-page-header {
+    background-color: var(--accent-light);
+    padding: 60px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.liked-page-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23006747' fill-opacity='0.05'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+}
+
+.liked-page-title {
+    font-size: 2.8rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.liked-page-description {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    position: relative;
+}
+
+/* Filter Bar */
+.liked-filter-bar {
+    background-color: var(--light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-top: -30px;
+    position: relative;
+    z-index: 10;
+}
+
+.liked-filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.liked-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.liked-filter-label {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.liked-filter-select {
+    padding: 10px 15px;
+    border: 1px solid var(--gray-dark);
+    border-radius: var(--border-radius);
+    background-color: var(--light);
+    color: var(--text);
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.liked-filter-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.liked-filter-search {
+    flex-grow: 1;
+    max-width: 300px;
+    position: relative;
+}
+
+.liked-filter-search-input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid var(--gray-dark);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    transition: var(--transition);
+}
+
+.liked-filter-search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.liked-filter-search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+/* Liked Stories Grid */
+.liked-stories-section {
+    padding: 60px 0;
+}
+
+.liked-stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.liked-story-card {
+    background-color: var(--light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid var(--gray-dark);
+    position: relative;
+}
+
+.liked-story-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.liked-story-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.liked-story-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.liked-story-card:hover .liked-story-image img {
+    transform: scale(1.1);
+}
+
+.liked-story-category {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: var(--primary);
+    color: var(--light);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 1;
+}
+
+.liked-story-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    display: flex;
+    gap: 5px;
+}
+
+.liked-story-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+}
+
+.liked-story-action:hover {
+    background-color: var(--light);
+    transform: scale(1.1);
+}
+
+.liked-story-action.remove {
+    color: var(--primary);
+}
+
+.liked-story-action.remove:hover {
+    background-color: var(--primary-light);
+}
+
+.liked-story-content {
+    padding: 20px;
+}
+
+.liked-story-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--dark);
+    transition: var(--transition);
+}
+
+.liked-story-card:hover .liked-story-title {
+    color: var(--primary);
+}
+
+.liked-story-description {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.liked-story-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--gray-dark);
+}
+
+.liked-story-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.liked-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.liked-meta-item i {
+    color: var(--primary);
+}
+
+.liked-story-button {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+/* Empty State */
+.liked-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.liked-empty-icon {
+    font-size: 4rem;
+    color: var(--gray-dark);
+    margin-bottom: 20px;
+}
+
+.liked-empty-title {
+    font-size: 1.8rem;
+    color: var(--dark);
+    margin-bottom: 15px;
+}
+
+.liked-empty-description {
+    color: var(--text-light);
+    max-width: 500px;
+    margin: 0 auto 30px;
+}
+
+/* Pagination */
+.liked-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.liked-page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--light);
+    color: var(--text);
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.liked-page-link:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.liked-page-link.active {
+    background-color: var(--primary);
+    color: var(--light);
+}
+
+.liked-page-link.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.liked-page-nav {
+    padding: 0 15px;
+    border-radius: 20px;
+    width: auto;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .liked-filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .liked-filter-search {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .liked-page-title {
+        font-size: 2.2rem;
+    }
+    
+    .liked-stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .liked-page-title {
+        font-size: 1.8rem;
+    }
+    
+    .liked-stories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .liked-filter-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .liked-filter-select {
+        flex-grow: 1;
+    }
+}
+</style>
+<!-- Page Header -->
+<section class="liked-page-header">
+    <div class="container">
+        <h1 class="liked-page-title fade-in">Truyện Đã Yêu Thích</h1>
+        <p class="liked-page-description fade-in delay-1">Danh sách những câu chuyện cổ tích bạn đã đánh dấu yêu thích. Bạn có thể dễ dàng quay lại đọc những câu chuyện này bất cứ lúc nào.</p>
+    </div>
+</section>
+
+<!-- Filter Bar -->
+<div class="container">
+    <div class="liked-filter-bar fade-in delay-2">
+        <div class="liked-filter-container">
+            <div class="liked-filter-group">
+                <span class="liked-filter-label">Sắp xếp theo:</span>
+                <select class="liked-filter-select" id="sort-select">
+                    <option value="recent">Mới nhất</option>
+                    <option value="oldest">Cũ nhất</option>
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+                    <option value="popular">Phổ biến nhất</option>
+                </select>
+            </div>
+            
+            <div class="liked-filter-group">
+                <span class="liked-filter-label">Danh mục:</span>
+                <select class="liked-filter-select" id="category-select">
+                    <option value="all">Tất cả</option>
+                    <option value="vietnam">Cổ tích Việt Nam</option>
+                    <option value="world">Cổ tích Thế giới</option>
+                    <option value="folk">Truyện dân gian</option>
+                    <option value="fairy">Truyện thần tiên</option>
+                </select>
+            </div>
+            
+            <div class="liked-filter-search">
+                <i class="fas fa-search liked-filter-search-icon"></i>
+                <input type="text" class="liked-filter-search-input" id="search-input" placeholder="Tìm trong truyện yêu thích...">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Liked Stories Section -->
+<section class="liked-stories-section">
+    <div class="container">
+        <!-- Liked Stories Grid -->
+        <div class="liked-stories-grid" id="liked-stories-container">
+            {% for story in liked_stories %}
+            <div class="liked-story-card fade-in" data-category="{{ story.category_slug }}" data-id="{{ story.id }}">
+                <div class="liked-story-image">
+                    <span class="liked-story-category">{{ story.the_loai }}</span>
+                    <div class="liked-story-actions">
+                        <form method="POST" style="display: inline;">
+    <input type="hidden" name="id_story" value="{{ story.id }}">
+    <button type="submit" class="liked-story-action remove" title="Xóa khỏi yêu thích">
+        <i class="fas fa-heart-broken"></i>
+    </button>
+</form>
+
+                        <button class="liked-story-action share" title="Chia sẻ" data-story-id="{{ story.id }}">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                    <img src="{{ story.image_url }}" alt="{{ story.title }}">
+                </div>
+                <div class="liked-story-content">
+                    <h3 class="liked-story-title">{{ story.title }}</h3>
+                    <p class="liked-story-description">{{ story.description }}</p>
+                    <div class="liked-story-footer">
+                        <div class="liked-story-meta">
+                            <div class="liked-meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>10 phút đọc</span>
+                            </div>
+                            <div class="liked-meta-item">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>{{ story.publish_date }}</span>
+                            </div>
+                        </div>
+                        <a href="/read/{{ story.id }}" class="btn liked-story-button">Đọc Ngay</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Empty State (Hidden by default) -->
+        <div class="liked-empty-state" id="empty-state" {% if liked_stories %}style="display: none;"{% endif %}>
+            <div class="liked-empty-icon">
+                <i class="far fa-heart"></i>
+            </div>
+            <h2 class="liked-empty-title">Chưa có truyện yêu thích</h2>
+            <p class="liked-empty-description">Bạn chưa đánh dấu truyện nào là yêu thích. Hãy khám phá kho tàng truyện cổ tích và đánh dấu những câu chuyện bạn thích để dễ dàng tìm lại sau này.</p>
+            <a href="/danh-muc" class="btn">
+                <i class="fas fa-book-open"></i> Khám phá truyện ngay
+            </a>
+        </div>
+
+        <!-- Pagination -->
+        <div class="liked-pagination" id="pagination-container" {% if not liked_stories %}style="display: none;"{% endif %}>
+            <a href="#" class="liked-page-link liked-page-nav disabled">
+                <i class="fas fa-chevron-left"></i> Trang trước
+            </a>
+            <a href="#" class="liked-page-link active">1</a>
+            <a href="#" class="liked-page-link">2</a>
+            <a href="#" class="liked-page-link">3</a>
+            <span class="liked-page-link disabled">...</span>
+            <a href="#" class="liked-page-link">10</a>
+            <a href="#" class="liked-page-link liked-page-nav">
+                Trang sau <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+               

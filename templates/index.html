@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+
+{% block title %}Truyện Cổ Tích Việt Nam{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title fade-in">Khám Phá Kho Tàng Truyện Cổ Tích Việt Nam</h1>
+        <p class="hero-subtitle fade-in delay-1">Đắm chìm trong thế giới diệu kỳ của những câu chuyện dân gian và cổ tích Việt Nam đầy màu sắc và ý nghĩa.</p>
+        <div class="hero-buttons fade-in delay-2">
+            <a href="#" class="btn">Đọc Ngay</a>
+            <a href="#" class="btn btn-outline">Khám Phá Thêm</a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Stories -->
+<section class="section featured-stories">
+    <div class="container">
+        <div class="stories-header">
+            <h2 class="stories-title">
+                {% if keyword %}
+                    Kết quả tìm kiếm: {{ total_results }} truyện
+                {% else %}
+                    Truyện Nổi Bật
+                {% endif %}
+            </h2>
+            {% if not keyword %}
+                <a href="#" class="view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+            {% endif %}
+        </div>
+
+        {% if news_list %}
+        <div class="stories-grid">
+            {% for id, tieude, noidung, hinhanh, linkgoc in news_list %}
+            <div class="story-card fade-in">
+                {% if hinhanh %}
+                <div class="story-image">
+                    <span class="story-category">Cổ Tích</span>
+                    <img src="{{ hinhanh }}" alt="{{ tieude }}">
+                </div>
+                {% endif %}
+                <div class="story-content">
+                    <h3 class="story-title">{{ tieude }}</h3>
+                    <p class="story-description">{{ noidung[:200] }}...</p>
+                    <div class="story-footer">
+                        <div class="story-meta">
+                            <i class="far fa-clock"></i>10 phút đọc
+                        </div>
+                        <a href="{{ url_for('read', news_id=id) }}" class="btn story-button">Đọc Ngay</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if page > 1 %}
+            <a class="page-link" href="{{ url_for('index', page=page-1, q=keyword) }}">Trang trước</a>
+            {% endif %}
+            <span class="page-number">Trang {{ page }} / {{ total_pages }}</span>
+            {% if page < total_pages %}
+            <a class="page-link" href="{{ url_for('index', page=page+1, q=keyword) }}">Trang sau</a>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="no-results" style="text-align: center; padding: 30px; background: #f8f8f8; border-radius: 10px; margin: 20px 0;">
+            <i class="fas fa-search" style="font-size: 40px; color: #c8102e; margin-bottom: 15px;"></i>
+            <p style="font-size: 18px; margin-bottom: 10px;">❗ Không tìm thấy kết quả nào cho từ khóa "{{ keyword }}".</p>
+            <p>Vui lòng thử lại với từ khóa khác hoặc <a href="{{ url_for('index') }}" style="color: #c8102e; text-decoration: underline;">quay lại trang chủ</a>.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Categories -->
+<section class="section categories">
+    <div class="container">
+        <h2 class="section-title">Danh Mục Truyện</h2>
+
+        <div class="categories-grid">
+            {% for category in categories %}
+            <a href="/theloai?the_loai={{ category.the_loai }}" class="category-card">
+                <img src="{{ category.image_url }}" alt="Ảnh thể loại {{ category.the_loai }}">
+                <span class="category-name">{{ category.the_loai }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Popular Stories -->
+<section class="section popular-stories">
+    <div class="container">
+        <div class="popular-header">
+            <i class="fas fa-chart-line popular-icon"></i>
+            <h2 class="stories-title">Truyện Được Yêu Thích</h2>
+        </div>
+        <div class="popular-list">
+    {% for story in top_like %}
+    <div class="popular-item fade-in">
+        <div class="popular-image">
+            <img src="{{ story.image_url }}" alt="Truyện {{ story.title }}">
+        </div>
+        <div class="popular-content">
+            <h3 class="popular-title"> {{ story.title }}</h3> 
+            <p class="popular-description">Số lượt thích: {{ story.countlike }}</p> 
+            <div class="popular-footer">
+                <div class="popular-meta">
+                    <div class="meta-item">
+                        <i class="far fa-clock"></i> 8 phút đọc
+                    </div>
+                </div>
+                <a href="{{ url_for('read', news_id=story.id) }}" class="btn btn-outline story-button">Đọc Ngay</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+        
+    </div>
+</section>
+<!-- Quote Section -->
+<section class="quote-section">
+    <div class="container">
+        <div class="quote-container">
+            <div class="quote-mark quote-mark-left">"</div>
+            <p class="quote-text">Truyện cổ tích là kho tàng văn hóa dân gian quý báu, là cầu nối giữa quá khứ và hiện tại, giúp chúng ta hiểu hơn về nguồn cội, bản sắc và giá trị truyền thống của dân tộc Việt Nam.</p>
+            <p class="quote-author">- GS. Nguyễn Đổng Chi</p>
+            <div class="quote-mark quote-mark-right">"</div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter">
+    <div class="container newsletter-container">
+        <div class="newsletter-content">
+            <h2 class="newsletter-title">Đăng Ký Nhận Truyện Mới</h2>
+            <p class="newsletter-description">Nhận thông báo khi có truyện cổ tích mới được cập nhật. Chúng tôi sẽ không gửi spam!</p>
+        </div>
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Email của bạn" required>
+            <button type="submit" class="btn btn-secondary">Đăng Ký</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

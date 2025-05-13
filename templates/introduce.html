@@ -1,0 +1,561 @@
+<style>
+ */
+    :root {
+      --primary: #c8102e;
+      --primary-dark: #a00d25;
+      --primary-light: #f8d7da;
+      --secondary: #ffd700;
+      --secondary-dark: #e6c200;
+      --accent: #006747;
+      --accent-light: #e6f4f1;
+      --dark: #333333;
+      --light: #ffffff;
+      --gray: #f5f5f5;
+      --gray-dark: #e0e0e0;
+      --text: #333333;
+      --text-light: #666666;
+      --border-radius: 8px;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      color: var(--text);
+      line-height: 1.6;
+      background-color: var(--light);
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* Utilities */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: var(--primary);
+      color: var(--light);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      text-align: center;
+      position: relative;
+      color: var(--primary);
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: var(--secondary);
+      border-radius: 2px;
+    }
+
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      padding: 100px 0;
+      background-color: var(--accent-light);
+      color: var(--light);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23006747' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: var(--light);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: var(--light);
+    }
+
+    /* Team Members Section */
+    .team-members {
+      background-color: var(--light);
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .member-card {
+      background-color: var(--light);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: 1px solid var(--gray-dark);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .member-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .member-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 30px auto 20px;
+      transition: var(--transition);
+    }
+
+    .member-card:hover .member-icon {
+      background-color: var(--primary);
+      color: var(--light);
+      transform: scale(1.1);
+    }
+
+    .member-role {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--primary);
+      color: var(--light);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      z-index: 1;
+    }
+
+    .member-content {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .member-name {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+      color: var(--dark);
+      transition: var(--transition);
+    }
+
+    .member-card:hover .member-name {
+      color: var(--primary);
+    }
+
+    .member-id {
+      color: var(--text-light);
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    .member-description {
+      color: var(--text);
+      margin-bottom: 15px;
+      flex-grow: 1;
+    }
+
+    .member-skills {
+      margin-bottom: 15px;
+    }
+
+    .skills-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .skill-tag {
+      background-color: var(--accent-light);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    .member-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 15px;
+      border-top: 1px solid var(--gray-dark);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dark);
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      background-color: var(--primary);
+      color: var(--light);
+    }
+
+    /* Quote Section */
+    .quote-section {
+      background-color: var(--accent-light);
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .quote-container {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .quote-mark {
+      font-size: 6rem;
+      color: var(--primary);
+      opacity: 0.2;
+      position: absolute;
+      line-height: 1;
+    }
+
+    .quote-mark-left {
+      top: -30px;
+      left: -20px;
+    }
+
+    .quote-mark-right {
+      bottom: -50px;
+      right: -20px;
+    }
+
+    .quote-text {
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--dark);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-author {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+
+    /* Decorative Elements */
+    .pattern-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: repeating-linear-gradient(
+        to right,
+        var(--primary),
+        var(--primary) 20px,
+        var(--secondary) 20px,
+        var(--secondary) 40px,
+        var(--accent) 40px,
+        var(--accent) 60px
+      );
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .delay-1 {
+      transition-delay: 0.2s;
+    }
+
+    .delay-2 {
+      transition-delay: 0.4s;
+    }
+
+    .delay-3 {
+      transition-delay: 0.6s;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 60px 0;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .nav-links.show {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--light);
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero-title {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+ {% extends "layout.html" %}
+
+{% block title %}Truyện Cổ Tích Việt Nam{% endblock %}
+
+{% block content %}
+<body>
+  <!-- Decorative Pattern -->
+  <div class="pattern-top"></div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">Đội Ngũ Phát Triển</h1>
+      <p class="hero-subtitle fade-in delay-1">Chúng tôi là những sinh viên đam mê văn hóa dân gian Việt Nam, nỗ lực xây dựng kho tàng truyện cổ tích để lưu giữ và phát huy những giá trị văn hóa truyền thống.</p>
+    </div>
+  </section>
+
+  <!-- Team Members Section -->
+  <section class="section team-members">
+    <div class="container">
+      <h2 class="section-title">Thành Viên Nhóm</h2>
+      
+      <div class="members-grid">
+        <!-- Member 1 -->
+        <div class="member-card fade-in">
+          <span class="member-role">Trưởng Nhóm</span>
+          <div class="member-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="member-content">
+            <h3 class="member-name">Lê Viết Phát</h3>
+            <p class="member-id">MSSV: 2224802010737</p>
+            <p class="member-description">Sinh viên năm cuối ngành Công nghệ thông tin, chuyên về phát triển ứng dụng web và di động. Đam mê văn hóa dân gian và có kinh nghiệm trong việc sưu tầm, biên soạn truyện cổ tích Việt Nam.</p>
+            
+            <div class="member-skills">
+              <h4 class="skills-title">Kỹ năng:</h4>
+              <div class="skills-list">
+                <span class="skill-tag">Phát triển Web</span>
+                <span class="skill-tag">Biên tập nội dung</span>
+                <span class="skill-tag">Quản lý dự án</span>
+                <span class="skill-tag">Nghiên cứu văn hóa</span>
+              </div>
+            </div>
+            
+            <div class="member-footer">
+              <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Member 2 -->
+        <div class="member-card fade-in delay-1">
+          <span class="member-role">Thành Viên</span>
+          <div class="member-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="member-content">
+            <h3 class="member-name">Phạm Hữu Tiến</h3>
+            <p class="member-id">MSSV: 2224802010737</p>
+            <p class="member-description">Sinh viên chuyên ngành Thiết kế đồ họa với niềm đam mê về minh họa truyện cổ tích. Có khả năng sáng tạo hình ảnh minh họa độc đáo, mang đậm bản sắc văn hóa Việt Nam.</p>
+            
+            <div class="member-skills">
+              <h4 class="skills-title">Kỹ năng:</h4>
+              <div class="skills-list">
+                <span class="skill-tag">Thiết kế đồ họa</span>
+                <span class="skill-tag">Minh họa</span>
+                <span class="skill-tag">UI/UX</span>
+                <span class="skill-tag">Xử lý hình ảnh</span>
+              </div>
+            </div>
+            
+            <div class="member-footer">
+              <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-behance"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Member 3 -->
+        <div class="member-card fade-in delay-2">
+          <span class="member-role">Thành Viên</span>
+          <div class="member-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="member-content">
+            <h3 class="member-name">Bùi Nguyễn Hoàng Ân</h3>
+            <p class="member-id">MSSV: 2224802010737</p>
+            <p class="member-description">Sinh viên ngành Văn học dân gian với kiến thức sâu rộng về truyện cổ tích và văn hóa dân gian Việt Nam. Phụ trách nghiên cứu, sưu tầm và biên soạn nội dung truyện cổ tích.</p>
+            
+            <div class="member-skills">
+              <h4 class="skills-title">Kỹ năng:</h4>
+              <div class="skills-list">
+                <span class="skill-tag">Nghiên cứu văn học</span>
+                <span class="skill-tag">Biên soạn nội dung</span>
+                <span class="skill-tag">Phân tích văn bản</span>
+                <span class="skill-tag">Kể chuyện</span>
+              </div>
+            </div>
+            
+            <div class="member-footer">
+              <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="https://web.facebook.com/?locale=vi_VN&_rdc=1&_rdr#" class="social-link"><i class="fab fa-youtube"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote Section -->
+  <section class="quote-section">
+    <div class="container">
+      <div class="quote-container">
+        <div class="quote-mark quote-mark-left">"</div>
+        <p class="quote-text">Truyện cổ tích là kho tàng văn hóa dân gian quý báu, là cầu nối giữa quá khứ và hiện tại, giúp chúng ta hiểu hơn về nguồn cội, bản sắc và giá trị truyền thống của dân tộc Việt Nam.</p>
+        <p class="quote-author">- Nhóm Phát Triển Truyện Cổ Tích Việt Nam</p>
+        <div class="quote-mark quote-mark-right">"</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+{% endblock %}
